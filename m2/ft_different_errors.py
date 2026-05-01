@@ -1,24 +1,12 @@
 def garden_operations(operation_number: int) -> None:
     if operation_number == 0:
-        try:
-            int("abc")
-        except ValueError:
-            raise
+        int("abc")
     elif operation_number == 1:
-        try:
-            i = 10 / 0
-        except ZeroDivisionError:
-            raise
+        i = 10 / 0
     elif operation_number == 2:
-        try:
-            open("i_dont_exist.txt")
-        except FileNotFoundError:
-            raise
+        open("i_dont_exist.txt")
     elif operation_number == 3:
-        try:
-            i = "mnam" + 5
-        except TypeError:
-            raise
+        i = "mnam" + 5
     else:
         print("Operation completed successfully")
 
