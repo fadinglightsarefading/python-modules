@@ -19,7 +19,10 @@ class DataProcessor(abc.ABC):
     def output(self) -> tuple[int, str]:
         self.remaining -= 1
         self.rank += 1
-        return (self.rank - 1, self.data.pop(0))
+        if not self.data:
+            return
+        else:
+            return (self.rank - 1, self.data.pop(0))
 
 
 class NumericProcessor(DataProcessor):
@@ -97,6 +100,18 @@ class LogProcessor(DataProcessor):
             for d in data:
                 self.ingest(d)
 
+
+class ExportPlugin(typing.Protocol):
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        pass
+
+
+class CSVExportPlugin:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        cvs_export = ",".join(text for _, text in data)
+        print(cvs_export)    
+
+
 class DataStream():
     def __init__(self):
         self.processors = []
@@ -128,6 +143,14 @@ class DataStream():
                   f"remaining {proc.remaining} on processor")
 
 
+    def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
+        to_be_exported = []
+        for proc in self.processors:
+            for i in range(0, nb):
+                to_be_exported += [proc.output()]
+        plugin.process_output(to_be_exported)
+
+
 def main() -> None:
     print("=== Code Nexus - Data Stream ===")
     num = NumericProcessor()
@@ -136,8 +159,10 @@ def main() -> None:
     print("\nInitialising data stream...")
     ds = DataStream()
     ds.print_processors_stats()
-    print("\nRegistering Numeric Processor")
+    print("\nRegistering Processors")
     ds.register_processor(num)
+    ds.register_processor(tex)
+    ds.register_processor(log)
     first_batch = ["Hello World",
                    [3.14, -1, 2.71],
                    [{'log_level': 'WARNING',
@@ -148,21 +173,9 @@ def main() -> None:
     print(f"\nSending first batch of data on stream: {first_batch}")
     ds.process_stream(first_batch)
     ds.print_processors_stats()
-    print("\nRegistering other data processors")
-    ds.register_processor(tex)
-    ds.register_processor(log)
-    print(f"Sending the same batch again")
-    ds.process_stream(first_batch)
-    ds.print_processors_stats()
-    print("\nConsuming some elements from the data processors: Numeric 3, Text 2, Log 1")
-    num.output()
-    num.output()
-    num.output()
-    tex.output()
-    tex.output()
-    log.output()
-    ds.print_processors_stats()
-
+    print("\nSending 3 processed data from each processor to a CSV plugin:")
+    ds.output_pipeline(3, CSVExportPlugin)
+    
 
 if __name__ == "__main__":
     main()
