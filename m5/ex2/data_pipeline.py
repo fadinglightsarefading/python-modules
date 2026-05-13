@@ -1,6 +1,7 @@
 import typing
 import abc
 
+
 class DataProcessor(abc.ABC):
     def __init__(self):
         self.data = []
@@ -17,11 +18,11 @@ class DataProcessor(abc.ABC):
         pass
 
     def output(self) -> tuple[int, str]:
-        self.remaining -= 1
-        self.rank += 1
         if not self.data:
             return
         else:
+            self.remaining -= 1
+            self.rank += 1
             return (self.rank - 1, self.data.pop(0))
 
 
@@ -109,17 +110,24 @@ class ExportPlugin(typing.Protocol):
 class CSVExportPlugin:
     def process_output(self, data: list[tuple[int, str]]) -> None:
         cvs_export = ",".join(text for _, text in data)
-        print(cvs_export)    
+        print(f"CSV Output:\n{cvs_export}")
+
+
+class JSONExportPlugin:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        parts = []
+        for num, text in data:
+            parts.append(f'"item_{num}": "{text}"')
+        json_export = "{" + ", ".join(parts) + "}"
+        print(f"JSON Output:\n{json_export}")
 
 
 class DataStream():
     def __init__(self):
         self.processors = []
 
-
     def register_processor(self, proc: DataProcessor) -> None:
         self.processors.append(proc)
-
 
     def process_stream(self, stream: list[typing.Any]) -> None:
         for data in stream:
@@ -130,8 +138,8 @@ class DataStream():
                     processed = True
                     break
             if not processed:
-                print(f"DataStream Error: Can't process element in stream: {data}")
-
+                print(f"DataStream Error: Can't process element in stream: "
+                      f"{data}")
 
     def print_processors_stats(self) -> None:
         print("=== Data Stream Statistics ===")
@@ -142,13 +150,15 @@ class DataStream():
                   f"total {proc.processed} items processed, "
                   f"remaining {proc.remaining} on processor")
 
-
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         to_be_exported = []
         for proc in self.processors:
             for i in range(0, nb):
-                to_be_exported += [proc.output()]
-        plugin.process_output(to_be_exported)
+                temp = proc.output()
+                if temp is not None:
+                    to_be_exported.append(temp)
+            plugin.process_output(to_be_exported)
+            to_be_exported = []
 
 
 def main() -> None:
@@ -174,8 +184,25 @@ def main() -> None:
     ds.process_stream(first_batch)
     ds.print_processors_stats()
     print("\nSending 3 processed data from each processor to a CSV plugin:")
-    ds.output_pipeline(3, CSVExportPlugin)
-    
+    csv_export_plugin = CSVExportPlugin()
+    ds.output_pipeline(3, csv_export_plugin)
+    print()
+    ds.print_processors_stats()
+    second_batch = [21,
+                    ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
+                    [{'log_level': 'ERROR', 'log_message': '500 server crash'},
+                     {'log_level': 'NOTICE', 'log_message':
+                      'Certificate expires in 10 days'}],
+                    [32, 42, 64, 84, 128, 168],
+                    'World Hello']
+    print(f"\nSending another batch of data : {second_batch}")
+    ds.process_stream(second_batch)
+    ds.print_processors_stats()
+    json_export_plugin = JSONExportPlugin()
+    ds.output_pipeline(5, json_export_plugin)
+    print()
+    ds.print_processors_stats()
+
 
 if __name__ == "__main__":
     main()
