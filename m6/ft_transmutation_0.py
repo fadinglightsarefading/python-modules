@@ -3,7 +3,9 @@ import alchemy.transmutation.recipes
 
 def main() -> None:
     print("=== Transmutation 0 ===")
-    print(f"Testing lead to gold: {lead_to_gold()}")
+    print("Testing \'import alchemy.transmutation.recipes\'"
+          "\nCalling \'alchemy.recipes.lead_to_gold()\'")
+    print(f"Testing lead to gold: {alchemy.transmutation.recipes.lead_to_gold()}")
     print()
 
 
