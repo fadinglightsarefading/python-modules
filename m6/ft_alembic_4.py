@@ -3,8 +3,9 @@ import alchemy
 
 def main() -> None:
     print("=== Alembic 4 ===")
-    print(f"Testing create_air(): {alchemy.create_air()}")
-    print("Testing create_earth(): ", end='')
+    print("Testing \'import alchemy\'")
+    print(f"Calling create_air(): {alchemy.create_air()}")
+    print("Calling create_earth(): ", end='')
     try:
         alchemy.create_earth()
     except AttributeError as e:

@@ -3,8 +3,8 @@ import abc
 
 
 class DataProcessor(abc.ABC):
-    def __init__(self):
-        self.data = []
+    def __init__(self) -> None:
+        self.data: list[str] = []
         self.rank = 0
         self.processed = 0
         self.remaining = 0
@@ -17,9 +17,9 @@ class DataProcessor(abc.ABC):
     def ingest(self, data: typing.Any) -> None:
         pass
 
-    def output(self) -> tuple[int, str]:
+    def output(self) -> tuple[int, str] | None:
         if not self.data:
-            return
+            return None
         else:
             self.remaining -= 1
             self.rank += 1
@@ -45,10 +45,10 @@ class NumericProcessor(DataProcessor):
             self.processed += 1
             self.remaining += 1
         elif isinstance(data, list):
-            data = [str(val) for val in data]
-            self.data.extend(data)
-            self.processed += len(data)
-            self.remaining += len(data)
+            data_str = [str(val) for val in data]
+            self.data.extend(data_str)
+            self.processed += len(data_str)
+            self.remaining += len(data_str)
 
 
 class TextProcessor(DataProcessor):
@@ -123,8 +123,8 @@ class JSONExportPlugin:
 
 
 class DataStream():
-    def __init__(self):
-        self.processors = []
+    def __init__(self) -> None:
+        self.processors: list[DataProcessor] = []
 
     def register_processor(self, proc: DataProcessor) -> None:
         self.processors.append(proc)

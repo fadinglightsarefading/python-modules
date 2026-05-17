@@ -1,5 +1,6 @@
 import alchemy.grimoire
 
+
 def main() -> None:
     print("=== Kaboom 0 ===")
     print("Accessing \'import alchemy.grimoire\'\n"

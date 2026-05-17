@@ -3,8 +3,9 @@ import alchemy
 
 def main() -> None:
     print("=== Distillation 1 ===")
-    print(f"Testing strength_potion(): {alchemy.strength_potion()}")
-    print(f"Testing heal() alias: {alchemy.heal()}")
+    print("Testing \'import alchemy\'")
+    print(f"Calling strength_potion(): {alchemy.strength_potion()}")
+    print(f"Calling heal() alias: {alchemy.heal()}")
     print()
 
 

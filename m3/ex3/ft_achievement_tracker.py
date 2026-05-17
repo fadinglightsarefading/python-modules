@@ -1,11 +1,11 @@
 import random
 
 
-def get_player_achievements(achievements_list: list) -> set:
+def get_player_achievements(achievements_list: list[str]) -> set[str]:
     return set(random.sample(achievements_list, random.randrange(5, 10)))
 
 
-def ft_achievement_tracker() -> None:
+def main() -> None:
     print("=== Achievment Tracker System ===\n")
     players = ["William", "Charles", "George", "Jane"]
     achievements_list = ["Taking Inventory", "Getting Wood", "Benchmaking",
@@ -23,24 +23,24 @@ def ft_achievement_tracker() -> None:
         i += 1
     i = 0
     while i < len(players):
-        print(f"\tPlayer {players[i]}:\n{achievements[i]}")
+        print(f"Player {players[i]}:\n{achievements[i]}\n")
         i += 1
-    distinct = set()
+    distinct: set[str] = set()
     i = 0
     while i < len(players):
         distinct = distinct.union(achievements[i])
         i += 1
-    print(f"\nAll distinct achievements: {distinct}")
+    print(f"All distinct achievements: {distinct}\n")
 
     common = achievements[0]
     i = 1
     while i < len(players):
         common = common.intersection(achievements[i])
         i += 1
-    print(f"\nCommon achievements: {common}\n")
+    print(f"Common achievements: {common}\n")
     i = 0
     while i < len(players):
-        others = set()
+        others: set[str] = set()
         j = 0
         while j < len(players):
             if j != i:
@@ -51,13 +51,9 @@ def ft_achievement_tracker() -> None:
     print()
     i = 0
     while i < len(players):
-        print(f"\t{players[i]} is missing:\n"
-              f"{set(achievements_list).difference(achievements[i])}")
+        print(f"{players[i]} is missing:\n"
+              f"{set(achievements_list).difference(achievements[i])}\n")
         i += 1
-
-
-def main() -> None:
-    ft_achievement_tracker()
 
 
 if __name__ == "__main__":

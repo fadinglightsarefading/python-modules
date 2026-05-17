@@ -3,7 +3,8 @@ from elements import create_water
 
 def main() -> None:
     print("=== Alembic 1 ===")
-    print(f"Testing create_water(): {create_water()}")
+    print("Testing \'from elements import create_water\'")
+    print(f"Calling create_water(): {create_water()}")
     print()
 
 

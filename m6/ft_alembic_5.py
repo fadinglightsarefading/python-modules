@@ -3,7 +3,8 @@ from alchemy import elements
 
 def main() -> None:
     print("=== Alembic 5 ===")
-    print(f"Testing create_air(): {elements.create_air()}")
+    print("Testing \'from alchemy import elements\'")
+    print(f"Callinging elements.create_air(): {elements.create_air()}")
     print()
 
 

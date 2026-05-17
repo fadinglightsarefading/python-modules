@@ -1,9 +1,10 @@
 import typing
 import abc
 
+
 class DataProcessor(abc.ABC):
-    def __init__(self):
-        self.data = []
+    def __init__(self) -> None:
+        self.data: list[str] = []
         self.rank = 0
         self.processed = 0
         self.remaining = 0
@@ -41,10 +42,10 @@ class NumericProcessor(DataProcessor):
             self.processed += 1
             self.remaining += 1
         elif isinstance(data, list):
-            data = [str(val) for val in data]
-            self.data.extend(data)
-            self.processed += len(data)
-            self.remaining += len(data)
+            data_str = [str(val) for val in data]
+            self.data.extend(data_str)
+            self.processed += len(data_str)
+            self.remaining += len(data_str)
 
 
 class TextProcessor(DataProcessor):
@@ -97,14 +98,13 @@ class LogProcessor(DataProcessor):
             for d in data:
                 self.ingest(d)
 
-class DataStream():
-    def __init__(self):
-        self.processors = []
 
+class DataStream():
+    def __init__(self) -> None:
+        self.processors: list[DataProcessor] = []
 
     def register_processor(self, proc: DataProcessor) -> None:
         self.processors.append(proc)
-
 
     def process_stream(self, stream: list[typing.Any]) -> None:
         for data in stream:
@@ -115,8 +115,8 @@ class DataStream():
                     processed = True
                     break
             if not processed:
-                print(f"DataStream Error: Can't process element in stream: {data}")
-
+                print(f"DataStream Error:"
+                      f"Can't process element in stream: {data}")
 
     def print_processors_stats(self) -> None:
         print("=== Data Stream Statistics ===")
@@ -151,10 +151,11 @@ def main() -> None:
     print("\nRegistering other data processors")
     ds.register_processor(tex)
     ds.register_processor(log)
-    print(f"\nSending the same batch again")
+    print("\nSending the same batch again")
     ds.process_stream(first_batch)
     ds.print_processors_stats()
-    print("Consuming some elements from the data processors: Numeric 3, Text 2, Log 1")
+    print("Consuming some elements from the data processors:"
+          " Numeric 3, Text 2, Log 1")
     num.output()
     num.output()
     num.output()

@@ -83,7 +83,7 @@ class Tree(Plant):
                  trunk_diametre: float) -> None:
         super().__init__(name, height, age)
         self.trunk_diametre = trunk_diametre
-        self.stats = Tree.Stats()
+        self.stats: Tree.Stats = Tree.Stats()
 
     def show(self) -> None:
         super().show()
@@ -105,56 +105,52 @@ class Seed(Flower):
         super().show()
         print(f" Seeds: {self.seeds}")
 
-    def bloom(self, seeds: int) -> None:
+    def bloom(self) -> None:
         super().bloom()
-        self.seeds += seeds
+        self.seeds += 42
 
 
 def ft_statistical_data(plant: Plant) -> None:
     plant.stats.display()
 
 
-def ft_garden_analytics() -> None:
+def main() -> None:
     print("=== Garden statistics ===")
-    plant = [Flower("Rose", 15.0, 10, "red"),
-             Tree("Oak", 200.0, 365, 5.0),
-             Seed("Sunflower", 80.0, 45, "yellow", 0)]
+    rose = Flower("Rose", 15.0, 10, "red")
+    oak = Tree("Oak", 200.0, 365, 5.0)
+    sunflower = Seed("Sunflower", 80.0, 45, "yellow", 0)
 
     print("=== Check year-old")
-    print(f"Is {plant[1]._age} more than a year? ->"
-          f"{Plant.older_than_year(plant[1]._age)}")
+    print(f"Is {oak._age} more than a year? -> "
+          f"{Plant.older_than_year(oak._age)}")
     print(f"Is 400 more than a year? -> {Plant.older_than_year(400)}")
 
     print("\n=== Flower")
-    plant[0].show()
-    ft_statistical_data(plant[0])
-    plant[0].grow(8)
-    plant[0].bloom()
-    plant[0].show()
-    ft_statistical_data(plant[0])
+    rose.show()
+    ft_statistical_data(rose)
+    rose.grow(8)
+    rose.bloom()
+    rose.show()
+    ft_statistical_data(rose)
 
     print("\n=== Tree")
-    plant[1].show()
-    ft_statistical_data(plant[1])
-    plant[1].produce_shade()
-    ft_statistical_data(plant[1])
+    oak.show()
+    ft_statistical_data(oak)
+    oak.produce_shade()
+    ft_statistical_data(oak)
 
     print("\n=== Seed")
-    plant[2].show()
-    plant[2].grow(30)
-    plant[2].age(20)
-    plant[2].bloom(42)
-    plant[2].show()
-    ft_statistical_data(plant[2])
+    sunflower.show()
+    sunflower.grow(30)
+    sunflower.age(20)
+    sunflower.bloom()
+    sunflower.show()
+    ft_statistical_data(sunflower)
 
     print("\n=== Anonymous")
     anon = Plant.anonymous()
     anon.show()
     ft_statistical_data(anon)
-
-
-def main() -> None:
-    ft_garden_analytics()
 
 
 if __name__ == "__main__":

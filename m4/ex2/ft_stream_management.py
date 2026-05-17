@@ -2,14 +2,17 @@ import sys
 import typing
 
 
-def ft_ancient_text() -> None:
+def main() -> None:
     print("=== Cyber Archives Recovery & Preservation ===")
+    if len(sys.argv) == 1:
+        print("Usage: python3 ft_ancient_text.py <file>\n")
+        return
     print(f"Accessing file \'{sys.argv[1]}\'")
     try:
-        f = open(sys.argv[1], "r")
+        f: typing.IO[str] = open(sys.argv[1], "r")
     except OSError as e:
-        sys.stderr.write(f"[STDERR] Error opening file \'{sys.argv[1]}\': "
-                         f"{e}\n")
+        sys.stderr.write(f"[STDERR] Error opening file \'{sys.argv[1]}\':"
+                         f" {e}\n")
         return
     content = f.read()
     print(f"---\n\n{content}\n---")
@@ -34,13 +37,6 @@ def ft_ancient_text() -> None:
     f.write(new_content)
     print(f"Data saved in file \'{file_name}\'")
     f.close()
-
-
-def main() -> None:
-    if len(sys.argv) == 1:
-        print("Usage: python3 ft_ancient_text.py <file>\n")
-        return
-    ft_ancient_text()
 
 
 if __name__ == "__main__":

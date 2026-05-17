@@ -1,22 +1,26 @@
 class GardenError(Exception):
-    def __init__(self, message="Caught GardenError"):
+    def __init__(self, message: str = "Caught GardenError"):
         Exception.__init__(self, message)
 
+
 class PlantError(GardenError):
-    def __init__(self, message="Caught PlantError"):
+    def __init__(self, message: str = "Caught PlantError"):
         GardenError.__init__(self, message)
+
 
 class WaterError(GardenError):
-    def __init__(self, message="Caught WaterError"):
+    def __init__(self, message: str = "Caught WaterError"):
         GardenError.__init__(self, message)
 
+
 class Plant:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.wilting = True
 
+
 class Tank:
-    def __init__(self):
+    def __init__(self) -> None:
         self.volume = 200
 
 
@@ -40,7 +44,7 @@ def test_aqua_garden(volume: int) -> None:
         raise GardenError()
 
 
-def ft_custom_errors() -> None:
+def main() -> None:
     print("=== Custom Garden Errors Demo ===")
     print("\nTesting PlantError...")
     tomato_plant = Plant("tomato plant")
@@ -65,9 +69,6 @@ def ft_custom_errors() -> None:
         print(f"{e}: Not enought water in tank!")
     print("\nAll custom types work correctly!")
 
-
-def main() -> None:
-    ft_custom_errors()
 
 if __name__ == "__main__":
     main()

@@ -3,8 +3,8 @@ import abc
 
 
 class DataProcessor(abc.ABC):
-    def __init__(self):
-        self.data = []
+    def __init__(self) -> None:
+        self.data: list[str] = []
         self.rank = 0
 
     @abc.abstractmethod
@@ -37,8 +37,8 @@ class NumericProcessor(DataProcessor):
         if isinstance(data, (int, float)):
             self.data.append(str(data))
         elif isinstance(data, list):
-            data = [str(val) for val in data]
-            self.data.extend(data)
+            data_str = [str(val) for val in data]
+            self.data.extend(data_str)
 
 
 class TextProcessor(DataProcessor):
@@ -98,7 +98,7 @@ def main() -> None:
         num.ingest("foo")
     except TypeError as e:
         print(f"Got exception: {e}")
-    num_data = [1, 2, 3, 4, 5]
+    num_data: list[int | float] = [1, 2, 3, 4, 5]
     print(f"Processing data: {num_data}")
     num.ingest(num_data)
     print("Extracting 3 values...")

@@ -1,11 +1,13 @@
 class PlantError(Exception):
-    def __init__(self, message="Caught PlantError"):
+    def __init__(self, message: str = "Caught PlantError"):
         Exception.__init__(self, message)
-        
+
+
 class Plant:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.watered = False
+
 
 def water_plant(plant: Plant) -> None:
     if not ('A' <= plant.name <= 'Z'):
@@ -15,7 +17,7 @@ def water_plant(plant: Plant) -> None:
         print(f"Watering {plant.name}: [OK]")
 
 
-def test_watering_system(plant: Plant) -> None:
+def test_watering_system(plant: list[Plant]) -> None:
     print("Opening water system")
     i = 0
     try:
@@ -30,7 +32,7 @@ def test_watering_system(plant: Plant) -> None:
         print("Closing water system")
 
 
-def main():
+def main() -> None:
     print("=== Garden Watering System ===")
     print("\nTesting valid plants...")
     plants = [Plant("tomato"),
