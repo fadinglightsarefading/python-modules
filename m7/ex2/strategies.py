@@ -6,7 +6,7 @@ import abc
 
 class BattleError(Exception, Creature):
     def __init__(self, message: str = "Caught BattleError"):
-    Exception.__init__(self, message)
+        Exception.__init__(self, message)
 
 
 class BattleStrategy(abc.ABC):
@@ -44,8 +44,8 @@ class DefensiveStrategy(BattleStrategy):
     def is_valid(self, creature: Creature) -> None:
         return isinstance(creature, HealCapability)
 
-    def act(self, creature: creature) -> None:
-        if AggressiveStrategy().is_valid(creature):
+    def act(self, creature: Creature) -> None:
+        if DefensiveStrategy().is_valid(creature):
             creature.attack()
             creature.heal()
         else:
