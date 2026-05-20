@@ -30,7 +30,7 @@ def main() -> None:
               f"{round(100 / sum(inventory.values()) * inventory[key], 1)}%")
         if inventory[key] == max(inventory.values()):
             item_most = key
-        elif inventory[key] == min(inventory.values()):
+        if inventory[key] == min(inventory.values()):
             item_least = key
     print(f"Item most abundant: {item_most} "
           f"with quantity {max(inventory.values())}")

@@ -14,34 +14,42 @@ def battle(
     fighters = []
     for i in range(len(opponents)):
         fighters += [opponents[i][0].create_base()]
-    for i in range(1, len(opponents)):
-        print("\n* Battle *")
-        fighters[0].describe()
-        print(f" vs.")
-        fighters[i].describe()
-        print(f" now fight!")
-        try:
-            opponents[0][1].act(fighters[0])
-        except BattleError as e:
-            print(f"{e}, aborting tournament: Invalid Creature"
-                  f" \'{fighters[0].name}\' for this "
-                  f"{(
-                      opponents[0][1].__class__.__name__
-                      .lower()
-                      .replace("strat", " strat")
-                  )}")
-            return
-        try:
-            opponents[i][1].act(fighters[i])
-        except BattleError as e:
-            print(f"{e}, aborting tournament: Invalid Creature"
-                  f" \'{fighters[i].name}\' for this "
-                  f"{(
-                      opponents[i][1].__class__.__name__
-                      .lower()
-                      .replace("strat", " strat")
-                  )}")
-            return
+    have_fought: list[set] = []
+    for i in range(0, len(opponents)):
+        for j in range(1, len(opponents)):
+             if fighters[i] == fighters[j]:
+                 continue
+             if {fighters[i], fighters[j]} in have_fought:
+                 continue
+             else:
+                have_fought += [{fighters[i], fighters[j]}]
+             print("\n* Battle *")
+             fighters[i].describe()
+             print(f" vs.")
+             fighters[j].describe()
+             print(f" now fight!")
+             try:
+                 opponents[i][1].act(fighters[i])
+             except BattleError as e:
+                 print(f"{e}, aborting tournament: Invalid Creature"
+                       f" \'{fighters[i].name}\' for this "
+                       f"{(
+                           opponents[i][1].__class__.__name__
+                           .lower()
+                           .replace("strat", " strat")
+                       )}")
+                 return
+             try:
+                 opponents[j][1].act(fighters[j])
+             except BattleError as e:
+                 print(f"{e}, aborting tournament: Invalid Creature"
+                       f" \'{fighters[j].name}\' for this "
+                       f"{(
+                           opponents[j][1].__class__.__name__
+                           .lower()
+                           .replace("strat", " strat")
+                       )}")
+                 return
 
 
 def main() -> None:
@@ -60,12 +68,20 @@ def main() -> None:
     ]
     battle(tournament_0)
 
-    print("Tournament 1 (error)")
+    print("\nTournament 1 (error)")
     tournament_1 = [
         (flame_fac, agress_strat),
         (hc_fac, defens_strat)
     ]
     battle(tournament_1)
+
+    print("\nTournament 2 (multiple)")
+    tournament_2 = [
+        (aqua_fac, normal_strat),
+        (hc_fac, defens_strat),
+        (tc_fac, agress_strat)
+    ]
+    battle(tournament_2)
 
 
 if __name__ == "__main__":
