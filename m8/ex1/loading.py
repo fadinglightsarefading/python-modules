@@ -2,6 +2,41 @@ import sys
 import importlib
 
 
+def package_versions(pacs_vers: dict[str]) -> None:
+    for key in pacs_vers:
+        print(f"[OK] {key} ({pacs_vers[key]})", end=' ')
+        if (key == "pandas"):
+            print("- Data manipulation ready", end='')
+        elif (key == "numpy"):
+            print("- Numerical computation ready", end='')
+        elif (key == "requests"):
+            print("- Network access ready", end='')
+        elif (key == "matplotlib"):
+            print("- Visualissation ready", end='')
+        print()
+    print()
+
+
+def generate_data() -> None:
+    import pandas
+    import numpy
+    import matplotlib.pyplot
+
+    print("Analyzing Matrix data...")
+    matrix_data = numpy.random.randint(0, 50, size=200)
+    print(f"Processing {len(matrix_data)} data points..."
+          f"\nGenerating visualisation...")
+    mdc = pandas.DataFrame(matrix_data, columns=["matrix value"])
+    matplotlib.pyplot.figure(figsize=(7, 5))
+    matplotlib.pyplot.plot(mdc["matrix value"])
+    matplotlib.pyplot.title("Matrix Data")
+    matplotlib.pyplot.xlabel("Ticks")
+    matplotlib.pyplot.ylabel("Redpills Taken")
+    ma = "matrix_analysis.png"
+    matplotlib.pyplot.savefig(ma)
+    print(f"\nAnalysis complete!\nresults saved to: {ma}")
+
+
 def main() -> None:
     print("\nLOADING STATUS: Loading programmes...\n")
     with open("requirements.txt", "r") as f:
@@ -28,18 +63,8 @@ def main() -> None:
               "(using pip)\npip install -r requirements.txt\n"
               "(using Poetry)\npoetry install\n")
         return
-    for key in pacs_vers:
-        print(f"[OK] {key} ({pacs_vers[key]})", end=' ')
-        if (key == "pandas"):
-            print("- Data manipulation ready", end='')
-        elif (key == "numpy"):
-            print("- Numerical computation ready", end='')
-        elif (key == "requests"):
-            print("- Network access ready", end='')
-        elif (key == "matplotlib"):
-            print("- Visualissation ready", end='')
-        print()
-    print()
+    package_versions(pacs_vers)
+    generate_data()
 
 
 if __name__ == "__main__":
