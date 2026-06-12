@@ -13,7 +13,7 @@ def blue_pill() -> None:
           "python3 -m venv matrix_env\n"
           "source matrix_env/bin/activate\t# On Unix\n"
           "matrix_env\\Scripts\\activate\t# On Windows\n"
-          "\nThen run the programme again.")
+          "\nThen run the programme again.\n")
 
 
 def red_pill() -> None:
@@ -23,7 +23,7 @@ def red_pill() -> None:
           f"Environment Path: {sys.prefix}\n")
     print("SUCCESS: You're in an isolated environment!\n"
           "Safe to install packages without affecting the global system.\n")
-    print(f"Package installation path:\n{site.getsitepackages()[0]}")
+    print(f"Package installation path:\n{site.getsitepackages()[0]}\n")
 
 
 def main() -> None:
