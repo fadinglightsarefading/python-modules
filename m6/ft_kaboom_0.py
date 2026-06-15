@@ -8,7 +8,7 @@ def main() -> None:
     print(f"Testing function: {alchemy.grimoire.light_spell_record(
         'Fantasy',
         'Earth, wind and fire'
-    )}")
+    )}\n")
 
 
 if __name__ == "__main__":

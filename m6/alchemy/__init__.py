@@ -1,4 +1,4 @@
-from . import transmutation
+import alchemy.transmutation # noqa
 
 # alchemy/elements.py
 from .elements import create_air

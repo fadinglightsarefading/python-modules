@@ -13,4 +13,3 @@ def dark_spell_record(spell_name: str, ingredients: str) -> str:
         return f"Spell not recorded: {spell_name} ({whether_validated})"
     else:
         return "Neither valid nor invalid."
-    
