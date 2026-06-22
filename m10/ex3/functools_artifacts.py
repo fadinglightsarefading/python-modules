@@ -6,13 +6,13 @@ from typing import Callable, Any
 def spell_reducer(spells: list[int], operation: str) -> int:
     operations = {"add": add, "multiply": mul,
                   "max": max, "min": min}
-    return reduce(operations[operation], spells)
+    return reduce(operations[operation], spells)  # type: ignore
 
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
-    return {1: partial(base_enchantment, 50, "Water"),
-            2: partial(base_enchantment, 50, "Earth"),
-            3: partial(base_enchantment, 50, "Fire")}
+    return {'1': partial(base_enchantment, 50, "Water"),
+            '2': partial(base_enchantment, 50, "Earth"),
+            '3': partial(base_enchantment, 50, "Fire")}
 
 
 def use_enchantment(power: int, element: str, target: str) -> str:
@@ -47,10 +47,6 @@ def spell_dispatcher() -> Callable[[Any], str]:
 
 
 def main() -> None:
-    spell_powers = [22, 41, 27, 11, 46, 12]
-    operations = ['add', 'multiply', 'max', 'min']
-    fibonacci_tests = [19, 11, 15]
-
     print("Testing spell reducer...")
     print(f"Sum: {spell_reducer([10, 20, 30, 40], "add")}\n"
           f"Product: {spell_reducer([10, 20, 30, 40], "multiply")}\n"
@@ -59,9 +55,9 @@ def main() -> None:
 
     print("Testing partial enchanter...")
     spells = partial_enchanter(use_enchantment)
-    print(spells[1]("Jonathan"),
-          spells[2]("Peter"),
-          spells[3]("Gabriel"),
+    print(spells['1']("Jonathan"),
+          spells['2']("Peter"),
+          spells['3']("Gabriel"),
           sep='\n', end='\n\n')
 
     print("Testing memoized fibonacci...")

@@ -10,7 +10,9 @@ def fireball(target: str, power: int) -> str:
 
 
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
-    def combined(tgt1: str, pwr1: int, tgt2: str, pwr2: int) -> tuple[str]:
+    def combined(
+            tgt1: str, pwr1: int, tgt2: str, pwr2: int
+    ) -> tuple[str, str]:
         return spell1(tgt1, pwr1), spell2(tgt2, pwr2)
     return combined
 
@@ -21,11 +23,14 @@ def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     return amplified
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable | str:
-    if callable(condition):
-        return spell
-    else:
-        return "Spell fizzled"
+def conditional_caster(condition: Callable, spell: Callable) -> Callable:
+    def test_condition(target: str, power: int) -> Callable | str:
+        if condition(target, power):
+            return spell(target, power)
+        else:
+            return "Spell fizzled"
+        return test_condition
+    return test_condition
 
 
 def spell_sequence(spells: list[Callable]) -> Callable:
@@ -44,9 +49,12 @@ def main() -> None:
     amplified = power_amplifier(fireball, 3)
     print(f"Power amplifier:\n{amplified("Wizard", 14)}\n")
 
-    print(f"Conditional:\n"
-          f"Calling real spell: {conditional_caster(heal, heal)}\n"
-          f"Calling fake spell: {conditional_caster(1, 1)}\n")
+    print("Conditional:")
+    sufficient_power = conditional_caster(
+        lambda _, power: power >= 5, fireball
+    )
+    print(f"Calling spell: {sufficient_power("Vilgax", 10)}\n"
+          f"Calling spell: {sufficient_power("Murdoc", 2)}\n")
 
     sequence = spell_sequence([heal, fireball, heal, fireball])
     print(f"Spell sequence (heal, fireball, heal, fireball):\n"

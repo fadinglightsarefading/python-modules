@@ -3,6 +3,7 @@ from typing import Callable
 
 def mage_counter() -> Callable:
     count = 0
+
     def counter() -> int:
         nonlocal count
         count += 1
@@ -20,7 +21,6 @@ def spell_accumulator(initial_power: int) -> Callable:
 
 def enchantment_factory(enchantment_type: str) -> Callable:
     def enchantment_table(item: str) -> str:
-        nonlocal enchantment_type
         return f"{enchantment_type} {item}"
     return enchantment_table
 
@@ -31,8 +31,7 @@ def memory_vault() -> dict[str, Callable]:
     def store(key: str, value: int) -> None:
         vault[key] = value
 
-    def recall(key: str) -> str:
-        nonlocal vault
+    def recall(key: str) -> int | str:
         if key not in vault:
             return "Memory not found"
         return vault[key]
@@ -41,13 +40,6 @@ def memory_vault() -> dict[str, Callable]:
 
 
 def main() -> None:
-
-    initial_powers = [51, 71, 63]
-    power_additions = [9, 8, 12, 16, 7]
-
-    enchantment_types = ['Shocking', 'Frozen', 'Earthen']
-    items_to_enchant = ['Sword', 'Amulet', 'Armor', 'Staff']
-
     print("Testing mage counter...")
     counter_a = mage_counter()
     counter_b = mage_counter()
@@ -56,9 +48,10 @@ def main() -> None:
           f"counter_b call 1: {counter_b()}\n")
 
     print("Testing spell accumulator...")
-    accumulator = spell_accumulator(100)
-    print(f"Base 100, add 20: {accumulator(20)}, {accumulator(20)}...")
-    print(f"Base 100, add 30: {accumulator(30)}, {accumulator(30)}...\n")
+    accumulator_a = spell_accumulator(100)
+    accumulator_b = spell_accumulator(100)
+    print(f"Base 100, add 20: {accumulator_a(20)}, {accumulator_a(20)}...")
+    print(f"Base 100, add 30: {accumulator_b(30)}, {accumulator_b(30)}...\n")
 
     print("Testing enchantment factory...")
     enchantment1 = enchantment_factory("Flaming")
@@ -71,7 +64,6 @@ def main() -> None:
     memvault["store"]("secret", 42)
     print(f"Recall 'secret': {memvault["recall"]("secret")}\n"
           f"Recall 'unknown': {memvault["recall"]("unknown")}")
-
 
 
 if __name__ == "__main__":
